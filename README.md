@@ -1,34 +1,127 @@
-# Sistema IoT para Otimização de Consumo de Energia
+README - Sistema IoT para Monitoramento e Otimização de Energia
+Descrição do Projeto
+Este projeto é uma solução IoT para monitorar e otimizar o consumo de energia elétrica em ambientes domésticos ou comerciais. Utiliza sensores para medir temperatura, umidade, tensão e corrente elétrica, além de um atuador (relé) para controle de dispositivos. Um painel no Thinger.io exibe os dados em tempo real e permite controlar o atuador remotamente.
 
-## Objetivo
+Funcionalidades
+Monitoramento em tempo real:
 
-Desenvolver uma plataforma IoT para monitoramento e otimização do consumo de energia de dispositivos inteligentes em tempo real, com foco na eficiência energética e na identificação de ineficiências. A solução integra sensores de corrente e voltagem para medir o consumo de energia, calcula a eficiência do dispositivo e envia esses dados para um painel de controle interativo.
+Tensão (V).
+Corrente (A).
+Potência (W).
+Consumo acumulado de energia (Wh).
+Temperatura (°C) e umidade (%).
+Controle remoto:
 
-## Funcionalidades
+Liga/desliga de dispositivos conectados ao relé.
+Visualização em painel:
 
-- **Leitura em tempo real**: Monitora o consumo de energia de dispositivos inteligentes.
-- **Cálculo de eficiência**: Analisa a eficiência do consumo de energia e identifica dispositivos ineficientes.
-- **Previsão de consumo**: Calcula a energia consumida e a eficiência ao longo do tempo.
-- **Painel de Controle**: Um painel interativo exibe os dados de consumo e eficiência energética, permitindo ações em tempo real.
-  
-## Como funciona
+Gráficos de consumo, eficiência e ambiente (temperatura e umidade).
+Estrutura do Projeto
+Hardware Utilizado
 
-### Sensores e Atuadores
+ESP32 (microcontrolador principal).
+DHT22 (sensor de temperatura e umidade).
+Sensores de corrente e tensão (integrados).
+Relé (atuador para controle de dispositivos).
+Software Utilizado
 
-O sistema utiliza sensores de corrente e voltagem para medir o consumo de energia. A partir desses dados, é calculada a potência e a eficiência do consumo. Caso a eficiência caia abaixo de um limiar (80%), o dispositivo é marcado como ineficiente.
+Plataforma de Simulação: Wokwi.
+Painel e Gateway: Thinger.io.
+Protocolo de Comunicação: HTTP.
+Requisitos
+Antes de começar, você precisará dos seguintes itens instalados no seu computador:
 
-### Comunicação e Dashboard
+Arduino IDE ou VS Code com PlatformIO.
+Conta no Thinger.io (crie em https://thinger.io).
+Python 3.x (caso queira executar a API Flask localmente).
+Simulador Wokwi (opcional para simulações).
+Como Configurar o Projeto
+1. Preparação do Código
+Clone o repositório do projeto:
 
-Os dados de consumo e eficiência são transmitidos para um servidor Flask que, por sua vez, envia para um painel de controle em tempo real. A comunicação entre os dispositivos e o servidor é realizada via MQTT.
+bash
+Copy code
+git clone <URL_DO_REPOSITORIO>
+Abra o projeto no Arduino IDE ou VS Code.
 
-## Configuração
+Certifique-se de configurar corretamente os seguintes parâmetros no arquivo config.h:
 
-1. Clone este repositório.
-2. Use o Wokwi para simular o sistema ou utilize um ESP32 real com a plataforma PlatformIO.
-3. Acesse o painel através da URL `http://<ip_do_servidor>:5000/data` para visualizar os dados em tempo real.
+cpp
+Copy code
+#define WIFI_SSID "Sua_Rede_WiFi"
+#define WIFI_PASSWORD "Sua_Senha"
+#define THINGER_USERNAME "Seu_Usuario_Thinger"
+#define THINGER_DEVICE_ID "ESP32_Monitor"
+#define THINGER_DEVICE_CREDENTIAL "Sua_Credencial"
+Compile e faça o upload do código no ESP32.
 
-## Tecnologias Utilizadas
+2. Configuração no Thinger.io
+Criar Dispositivo no Thinger.io:
 
-- **ESP32**: Microcontrolador para coletar dados dos sensores e controlar atuadores.
-- **Flask**: Framework Python para criar uma API e servir os dados.
-- **MQTT**: Protocolo de comunicação entre os dispositivos e o servidor.
+Acesse sua conta no Thinger.io.
+No painel principal, clique em Devices > Add Device.
+Insira as informações do dispositivo:
+Device ID: ESP32_Monitor.
+Device Credentials: (copie e insira a credencial no código).
+Salve.
+Adicionar Recursos:
+
+No dispositivo ESP32_Monitor, clique em Edit Device.
+Configure os recursos necessários no menu Device API:
+Temperature (DHT22).
+Humidity (DHT22).
+Voltage (sensor de tensão).
+Current (sensor de corrente).
+Relay (controle remoto do relé).
+Criar Widgets no Dashboard:
+
+Acesse o menu Dashboards e crie um novo painel.
+Adicione os seguintes widgets:
+Gráfico de Linha para monitorar tensão, corrente e potência.
+Indicador Numérico para exibir temperatura, umidade e eficiência.
+Botão para ligar/desligar o relé remotamente.
+Configure cada widget:
+Selecione o dispositivo ESP32_Monitor.
+Escolha o recurso correspondente para cada widget.
+3. Testar no Wokwi (Opcional)
+Abra o arquivo .json fornecido no simulador Wokwi.
+Inicie a simulação para validar os dados do sensor e o controle do relé.
+Fluxo de Dados
+Os sensores coletam os dados de temperatura, umidade, tensão e corrente.
+O ESP32 processa os dados e os envia para o Thinger.io via HTTP.
+O painel no Thinger.io exibe os dados em tempo real e permite interagir com o relé.
+Recursos Disponíveis no Projeto
+Código-Fonte Completo
+
+Localizado na pasta src/.
+Esquema de Conexões
+
+Imagem do diagrama na pasta docs/.
+Configuração no Thinger.io
+
+Documentação neste README.
+Simulação Wokwi
+
+Arquivo .json para teste no simulador.
+Como Testar a API Local (Opcional)
+Instale as dependências:
+bash
+Copy code
+pip install flask
+Execute a API:
+bash
+Copy code
+python app.py
+Acesse no navegador:
+http://localhost:5000/data.
+Capturas de Tela e Exemplos
+Dashboard Thinger.io
+
+Imagem do painel com widgets configurados.
+Simulação Wokwi
+
+Screenshot mostrando o ESP32 e sensores conectados.
+Contribuições
+Sinta-se à vontade para abrir issues ou enviar pull requests com melhorias. Este é um projeto de código aberto!
+
+Criador: Patrick Jaguski
