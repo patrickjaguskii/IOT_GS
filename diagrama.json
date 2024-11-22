@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "author": "IoT Energy Project",
+  "description": "Diagrama atualizado para projeto IoT",
+  "components": [
+      {
+          "id": "esp32",
+          "type": "microcontroller",
+          "name": "ESP32 Dev Kit V1",
+          "model": "esp32doit-devkit-v1",
+          "pins": [
+              {"pin": "GPIO34", "name": "ADC1_CHANNEL_0", "type": "analog"},
+              {"pin": "GPIO25", "name": "DHT22_SIGNAL", "type": "digital"},
+              {"pin": "GPIO26", "name": "RELAY_SIGNAL", "type": "digital"}
+          ]
+      },
+      {
+          "id": "sensor_energia",
+          "type": "sensor",
+          "name": "Sensor de Corrente e Voltagem",
+          "pins": [
+              {"pin": "GPIO34", "type": "analog"}
+          ],
+          "parameters": {
+              "voltage_range": "210V-240V",
+              "current_range": "0.5A-5A"
+          }
+      },
+      {
+          "id": "sensor_dht",
+          "type": "sensor",
+          "name": "Sensor de Temperatura e Umidade (DHT22)",
+          "pins": [
+              {"pin": "GPIO25", "type": "digital"}
+          ],
+          "parameters": {
+              "type": "DHT22",
+              "humidity_range": "0%-100%",
+              "temperature_range": "-40°C-80°C"
+          }
+      },
+      {
+          "id": "rele",
+          "type": "actuator",
+          "name": "Relé",
+          "pins": [
+              {"pin": "GPIO26", "type": "digital"}
+          ]
+      }
+  ],
+  "connections": [
+      {
+          "from": "sensor_energia",
+          "to": "esp32",
+          "data": "Leitura de corrente e voltagem em tempo real"
+      },
+      {
+          "from": "sensor_dht",
+          "to": "esp32",
+          "data": "Leitura de temperatura e umidade"
+      },
+      {
+          "from": "esp32",
+          "to": "rele",
+          "data": "Controle do estado do relé"
+      }
+  ]
+}
